@@ -4,7 +4,7 @@
 function openNav() {
     document.getElementById("mySidepanel").style.width = "350px";
 }
-//testing
+
 function closeNav() {
     parse_files();
     
