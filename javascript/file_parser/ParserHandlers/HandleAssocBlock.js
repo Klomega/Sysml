@@ -1,4 +1,5 @@
 class HandleAssocBlock extends HandleAbstractBlock {
+
     /**
      * Handles the assoc_block key word
      * 
@@ -11,9 +12,11 @@ class HandleAssocBlock extends HandleAbstractBlock {
 
             this.syntaxReader.skip_newlines_blankspace();
             var open_bracket = this.syntaxReader.read_next_char(); // {
-
-            this.handle_end();
-            this.handle_end();
+            if(open_bracket === "{"){
+                this.handle_end();
+            }
+            //this.handle_end();
+            //this.handle_end();
 
             this.syntaxReader.skip_newlines_blankspace();
             var close_bracket = this.syntaxReader.read_next_char(); // }
@@ -27,6 +30,7 @@ class HandleAssocBlock extends HandleAbstractBlock {
      */
     handle_end() {
         this.syntaxReader.skip_newlines_blankspace();
+
         var end = this.syntaxReader.read_key_word();
     
         if(end = "end") {
