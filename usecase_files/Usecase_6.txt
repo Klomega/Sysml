@@ -15,7 +15,7 @@ package EndUser {
     block 'End User' {
         part Requirements : Requirements[1];
         part Procurement : Procurement[1];
-
+        
         link : 1ep1o1-1ep3i1 connect Requirements::Pen_&_Paper to Procurement::Architect_Search;
     }
 }

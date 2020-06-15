@@ -31,7 +31,7 @@ function parse_files(){
     var packages = parser.get_parsed_packages();
     for(var i = 0; i < packages.length; i++) {
         if(package_is_in_array(packages[i], window.packages)) {
-            replace_package(package[i], window.packages);
+            replace_package(packages[i], window.packages);
         } else {
             window.packages = window.packages.concat(packages[i]);
         }       

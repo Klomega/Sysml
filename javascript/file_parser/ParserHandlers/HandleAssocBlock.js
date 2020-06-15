@@ -1,22 +1,24 @@
+/**
+ * This is not used..
+ */
 class HandleAssocBlock extends HandleAbstractBlock {
-
     /**
      * Handles the assoc_block key word
      * 
      * Not finished since it is not adding the assoc_block to the package...
      */
     handle_assoc_block() {
+        this.syntaxReader.error("Assoc blocks is not implemented");
+
         this.syntaxReader.skip_newlines_blankspace();
         var block_key_word = this.syntaxReader.read_key_word(); // Should be block
         if(block_key_word == 'block') {
 
             this.syntaxReader.skip_newlines_blankspace();
             var open_bracket = this.syntaxReader.read_next_char(); // {
-            if(open_bracket === "{"){
-                this.handle_end();
-            }
-            //this.handle_end();
-            //this.handle_end();
+
+            this.handle_end();
+            this.handle_end();
 
             this.syntaxReader.skip_newlines_blankspace();
             var close_bracket = this.syntaxReader.read_next_char(); // }
@@ -30,7 +32,6 @@ class HandleAssocBlock extends HandleAbstractBlock {
      */
     handle_end() {
         this.syntaxReader.skip_newlines_blankspace();
-
         var end = this.syntaxReader.read_key_word();
     
         if(end = "end") {

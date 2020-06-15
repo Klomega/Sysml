@@ -1,10 +1,11 @@
+/**
+ *  Handles the link key word
+ */
 class HandleLink extends HandleBlockContent {
     /**
      * Handles the link keyword and returns a new Link object
      */
     handle_link(block) {
-
-        this.syntaxReader.skip_newlines_blankspace();
 
         var colon = this.syntaxReader.read_next_char(); // :
 
@@ -12,11 +13,7 @@ class HandleLink extends HandleBlockContent {
 
         var assoc_rel_name = this.syntaxReader.read_name();
 
-        this.syntaxReader.skip_newlines_blankspace();
-
         var connect = this.syntaxReader.read_key_word();
-
-        this.syntaxReader.skip_newlines_blankspace();
 
         var part_name_1 = this.syntaxReader.read_name();
         var n_c = this.syntaxReader.check_next_char();
@@ -28,12 +25,8 @@ class HandleLink extends HandleBlockContent {
         this.syntaxReader.skip_newlines_blankspace();
 
         var to = this.syntaxReader.read_key_word();
-
-        this.syntaxReader.skip_newlines_blankspace();
         
         var part_name_2 = this.syntaxReader.read_name();
-        
-        this.syntaxReader.skip_newlines_blankspace();
 
         var n_c = this.syntaxReader.check_next_char();
         if(n_c == ":") {

@@ -4,6 +4,14 @@
  */
 class Parser extends HandleValueType{
                 // The inheritance is beautiful chaos...
+    /*
+
+        How the inheritance is implemented
+
+        Parser <- HandleValueType <- HandleValue <- HandleRef <- HandlePart <- HandleLink <- HandleBlockContent <- HandleBlock <- HandleAssocBlock <- HandleAbstractBlock <- HandleValName 
+
+    */
+
     /**
      * Constructor for the Parser. Creates a new SyntaxReader object
      * 
@@ -35,6 +43,7 @@ class Parser extends HandleValueType{
 
                 var next_keyword = this.syntaxReader.read_key_word();
                 if(next_keyword != "}") { // If the file end with a } the parser will crash
+                                        // I think that is fixed?
                     this.syntaxReader.skip_newlines_blankspace();
                 }
                 
@@ -84,45 +93,13 @@ class Parser extends HandleValueType{
     }
 
 
+    
+
     /**
-     * For the special case for EP part references can be in a part.
-     * This method will handle those references
-     * @param {Part} part 
+     * Returns the package with the name that matches the parameter name
+     * @param {String} name 
+     * @param {Array} packages 
      */
-    handle_part_reference(part) {
-        this.syntaxReader.skip_newlines_blankspace();
-        var next_key_word = this.syntaxReader.read_key_word();
-        if(next_key_word == "ref") {
-
-            this.syntaxReader.skip_newlines_blankspace();
-
-            var ref_name = this.syntaxReader.read_name();
-
-            this.syntaxReader.skip_newlines_blankspace();
-            this.syntaxReader.skip_next_char(); // Skip the :
-            this.syntaxReader.skip_newlines_blankspace();
-
-            var partname = this.syntaxReader.read_name();
-
-            this.syntaxReader.skip_newlines_blankspace();
-            var amount = this.syntaxReader.read_amount();
-
-            this.syntaxReader.skip_newlines_blankspace();
-            this.syntaxReader.skip_next_char(); // Skip the ;
-
-            part.part_references.push(new Part_Reference(ref_name, part, this.get_part_by_name(partname), amount));
-
-            this.handle_part_reference(part);
-
-        } else if(next_key_word == "}") {
-            return;
-        }
-         else {
-            this.syntaxReader.error("Expected keyword ref or } but got " + next_key_word);
-        }
-    }
-
-
     get_package_by_name(name, packages) {
         for(var i = 0; i < packages.length; i++) {
             if(packages[i].name == name) {
@@ -151,6 +128,11 @@ class Parser extends HandleValueType{
         return new_block;
     }
 
+    /**
+     * If a block exists with the same name it will be replaced. 
+     * @param {String} name 
+     * @param {Block} block 
+     */
     replace_block_by_name(name, block) {
         for(var i = 0; i < this.active_package.blocks.length; i++) {
             if(this.active_package.blocks[i].name == name) {
@@ -207,6 +189,11 @@ class Parser extends HandleValueType{
         return part;
     }
     
+    /**
+     * Will return the Abstract block that matches with the parameter name.
+     * If no block matches it will create a new one with the name
+     * @param {String} name 
+     */
     get_abstract_block_by_name(name) {
         for(var i = 0; i < this.abstract_blocks.length; i++) {
             if(this.abstract_blocks[i].name == name) {
@@ -219,6 +206,12 @@ class Parser extends HandleValueType{
         return a_b;
     }
 
+
+    /**
+     * Will copy the content of an abstract block to a new block. The new block will have the name from the parameter new_block_name
+     * @param {String} new_block_name 
+     * @param {Abstract_Block} abstract_block 
+     */
     get_block_from_abstract_block(new_block_name, abstract_block) {
         var block = Object.assign(new Block(new_block_name), abstract_block);
         block.name = new_block_name;

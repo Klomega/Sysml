@@ -113,3 +113,11 @@
   textarea {
     resize: none;
   }
+
+
+  .howto-btn {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    height : 1em;
+  }

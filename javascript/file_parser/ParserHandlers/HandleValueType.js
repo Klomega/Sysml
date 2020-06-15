@@ -1,3 +1,6 @@
+/**
+ * Handles the value type key word
+ */
 class HandleValueType extends HandleValue{
     /**
      * Handles the value type key word
@@ -5,12 +8,11 @@ class HandleValueType extends HandleValue{
     handle_value_type() {
         this.syntaxReader.skip_newlines_blankspace();
         var type = this.syntaxReader.read_key_word();
-        this.syntaxReader.skip_newlines_blankspace();
+
         if(type == "type") {
             var v_t_d_name = this.syntaxReader.read_name();
             var v_t_d = this.get_value_type_by_name(v_t_d_name);
-            this.syntaxReader.skip_newlines_blankspace();
-
+            
             var open_bracket = this.syntaxReader.read_next_char();
             if(open_bracket == "{") {
                 this.handle_value_type_content(v_t_d);
@@ -35,7 +37,7 @@ class HandleValueType extends HandleValue{
         
         var n_w = this.syntaxReader.read_name();
         
-        this.syntaxReader.skip_newlines_blankspace();
+
 
         var colon = this.syntaxReader.read_next_char();
         var g_t = this.syntaxReader.read_next_char();
@@ -43,7 +45,7 @@ class HandleValueType extends HandleValue{
             this.syntaxReader.skip_newlines_blankspace();
 
             var n_w_2 = this.syntaxReader.read_name();
-            this.syntaxReader.skip_newlines_blankspace();
+            
             this.syntaxReader.skip_next_char(); // Skips the ;
             this.syntaxReader.skip_newlines_blankspace();
             v_t_d.add_value(n_w + " : " + n_w_2);

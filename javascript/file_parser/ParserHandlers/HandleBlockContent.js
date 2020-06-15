@@ -1,3 +1,7 @@
+/**
+ *  Handles the content of a block
+ * 
+ */
 class HandleBlockContent extends HandleBlock{
     
     /**
@@ -21,13 +25,15 @@ class HandleBlockContent extends HandleBlock{
             case "link":
                 block.add_link(this.handle_link(block));
                 break;
+            case "}":
+                this.syntaxReader.skip_newlines_blankspace();
+                return;
             default: // If just a value should be assigned
                      // and the value keyword is not used
                 this.handle_val_name(block, next_keyword);
                 break;
         }
 
-        this.syntaxReader.skip_newlines_blankspace();
         if(this.syntaxReader.check_next_char() == "}") {
             this.syntaxReader.skip_next_char(); // skip the }
             return;

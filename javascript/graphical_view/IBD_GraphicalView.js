@@ -13,6 +13,10 @@ class IBD_GraphicalView extends GraphicalView{
 
     draw_ibd(_package, block, x, y, size, depth) {
 
+        if(!block.has_parts()) {
+            return;
+        }
+
         if(block.name.includes("::")) {
             var pack_name = block.name.split("::");
             var pack = get_package_by_name(pack_name[0]);
@@ -81,15 +85,7 @@ class IBD_GraphicalView extends GraphicalView{
         }
 
 
-        // Draw the links
-        for(var i = 0; i < this.drawn_parts.length; i++) {
-            for(var j = 0; j < this.drawn_parts[i].block.links.length; j++) {
-                var link = this.drawn_parts[i].block.links[j];
-                if(this.drawn_parts.includes(link.from) && this.drawn_parts.includes(link.to)) {
-                    this.line_layer.add(this.get_assoc_line(link.from, link.to, link.assoc_block.name));
-                }
-            }
-        }
+        //this.draw_links();
 
 
         this.stage.add(this.package_layer);
@@ -135,7 +131,7 @@ class IBD_GraphicalView extends GraphicalView{
             var _y = y;
 
             x += size / 2;
-            y += size / 4;
+            y += size / 3;
 
             var childs = [];
             var _size = size;
@@ -168,6 +164,10 @@ class IBD_GraphicalView extends GraphicalView{
 
             part.set_position_size(_x, _y, (x - _x), size + highest_child);
             this.drawn_parts.push(part);
+
+            //
+            this.draw_links_of_block(part.block);
+
             return [childs.concat([this.get_ibd_box(_x, _y, (x - _x), size + highest_child, part.name + ": " + part_block.name + " " + part.amount, "", "", part_block)]),(x - _x), size + highest_child];
 
         } else {
@@ -178,6 +178,27 @@ class IBD_GraphicalView extends GraphicalView{
 
     }
 
+
+    draw_links() {
+        // Draw the links
+        for(var i = 0; i < this.drawn_parts.length; i++) {
+            for(var j = 0; j < this.drawn_parts[i].block.links.length; j++) {
+                var link = this.drawn_parts[i].block.links[j];
+                if(this.drawn_parts.includes(link.from) && this.drawn_parts.includes(link.to)) {
+                    this.line_layer.add(this.get_assoc_line(link.from, link.to, link.assoc_block.name));
+                }
+            }
+        }
+    }
+
+    draw_links_of_block(block) {
+        for(var i = 0; i < block.links.length; i++) {
+            if(this.drawn_parts.includes(block.links[i].from) && this.drawn_parts.includes(block.links[i].to)) {
+                var link = block.links[i];
+                this.line_layer.add(this.get_assoc_line(link.from, link.to, link.assoc_block.name));
+            }
+        }
+    }
 }
 
 

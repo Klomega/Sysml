@@ -1,6 +1,9 @@
 
 /**
  * Represents an assoc block
+ * 
+ *      This is not implemented as it should be. Instead the links will only use the name 
+ * 
  */
 class Assoc_Block {
     

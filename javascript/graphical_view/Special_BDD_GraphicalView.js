@@ -13,6 +13,7 @@ class Special_BDD_GraphicalView extends GraphicalView {
 
     draw_special_bdd(_package, block, x, y, size, depth_from, depth_to, draw_part_arrows, draw_references, draw_links) {
 
+        this.draw_links = draw_links;
         this.draw_part_arrows = draw_part_arrows;
 
         if(block.name.includes("::")) {
@@ -75,7 +76,7 @@ class Special_BDD_GraphicalView extends GraphicalView {
                 }
             }
 
-            // Draw the Links
+            /*// Draw the Links
             for(var i = 0; i < this.drawn_blocks.length; i++) {
                 for(var j = 0; j < this.drawn_blocks[i].links.length; j++) {
                     var link = this.drawn_blocks[i].links[j];
@@ -84,7 +85,7 @@ class Special_BDD_GraphicalView extends GraphicalView {
                     }
             
                 }
-            }
+            }*/
         }
         
         if(draw_references) {
@@ -120,9 +121,11 @@ class Special_BDD_GraphicalView extends GraphicalView {
                 var n_b = pack.get_block_by_name(pack_name[1]);
                 if(n_b) {
                     block = n_b;
+                    block.set_position_size(x, y, size, size);
                 }
             }
         }
+        
         if(depth <= depth_to) {
             if(block.has_parts()) {
                 y += size * 2;
@@ -154,6 +157,10 @@ class Special_BDD_GraphicalView extends GraphicalView {
                     if(this.draw_part_arrows) {
                         this.line_layer.add(this.get_part_arrow(block, block.value_types[i], "", false));
                     }
+                }
+
+                if(this.draw_links) {
+                    this.draw_links_of_block(block);
                 }
 
                 return[x - 2 * size, y];
@@ -199,6 +206,15 @@ class Special_BDD_GraphicalView extends GraphicalView {
                 parts = parts.concat(this.recursive_get_skip(amount -1, block.parts[i].block));
             }
             return parts;
+        }
+    }
+
+    draw_links_of_block(block) {
+        for(var i = 0; i < block.links.length; i++) {
+            if(this.drawn_parts.includes(block.links[i].from) && this.drawn_parts.includes(block.links[i].to)) {
+                var link = block.links[i];
+                this.line_layer.add(this.get_assoc_line(link.from, link.to, link.assoc_block.name));
+            }
         }
     }
 

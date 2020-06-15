@@ -27,7 +27,7 @@ class SyntaxReader {
             }
         }
 
-        //this.skip_newlines_blankspace();
+        this.skip_newlines_blankspace();
         return next_key_word;
 
     }
@@ -72,6 +72,7 @@ class SyntaxReader {
      */
     read_amount() {
         var amount_brackets = this.read_key_word();
+        this.skip_newlines_blankspace();
         return parseInt(amount_brackets.slice(1, -1));
     }
 

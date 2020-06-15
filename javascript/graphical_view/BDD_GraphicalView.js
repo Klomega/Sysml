@@ -63,7 +63,7 @@ class BDD_GraphicalView extends GraphicalView{
                 this.block_layer.add(childs[i]);
             }
             
-            if(this.draw_links) {
+            /*if(this.draw_links) {
                 // Draw the Links
                 for(var i = 0; i < this.drawn_blocks.length; i++) {
                     for(var j = 0; j < this.drawn_blocks[i].links.length; j++) {
@@ -75,7 +75,7 @@ class BDD_GraphicalView extends GraphicalView{
                     }
                 }
 
-            }
+            }*/
             
 
         } else { // If the block don't have any parts
@@ -191,6 +191,10 @@ class BDD_GraphicalView extends GraphicalView{
                 x += 2 * size;
             }
             
+            if(this.draw_links) {
+                this.draw_links_of_block(block);
+            }
+
             // Uncomment this for not drawing tree structure
             //if(!this.drawn_blocks.includes(block)) {
                 //block.set_position_size(_x, _y, size, size); // Moved this to before the big for loop
@@ -214,6 +218,14 @@ class BDD_GraphicalView extends GraphicalView{
         }
     }
 
+    draw_links_of_block(block) {
+        for(var i = 0; i < block.links.length; i++) {
+            if(this.drawn_parts.includes(block.links[i].from) && this.drawn_parts.includes(block.links[i].to)) {
+                var link = block.links[i];
+                this.line_layer.add(this.get_assoc_line(link.from, link.to, link.assoc_block.name));
+            }
+        }
+    }
 }
 
 

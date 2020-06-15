@@ -1,4 +1,7 @@
 
+/**
+ * This is not used... 
+ */
 class EP_GraphicalView extends GraphicalView{
 
     /**
