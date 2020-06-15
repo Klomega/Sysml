@@ -8,20 +8,21 @@ class HandleAssocBlock extends HandleAbstractBlock {
      * Not finished since it is not adding the assoc_block to the package...
      */
     handle_assoc_block() {
-        this.syntaxReader.error("Assoc blocks is not implemented");
+        //this.syntaxReader.error("Assoc blocks is not implemented");
 
         this.syntaxReader.skip_newlines_blankspace();
         var block_key_word = this.syntaxReader.read_key_word(); // Should be block
         if(block_key_word == 'block') {
 
             this.syntaxReader.skip_newlines_blankspace();
-            var open_bracket = this.syntaxReader.read_next_char(); // {
+            var blockName = this.syntaxReader.read_key_word();
+            this.syntaxReader.read_next_char(); // {
 
             this.handle_end();
             this.handle_end();
 
             this.syntaxReader.skip_newlines_blankspace();
-            var close_bracket = this.syntaxReader.read_next_char(); // }
+            this.syntaxReader.read_next_char(); // }
         } else {
             this.syntaxReader.error("Expected keyword block ");
         }
@@ -32,22 +33,30 @@ class HandleAssocBlock extends HandleAbstractBlock {
      */
     handle_end() {
         this.syntaxReader.skip_newlines_blankspace();
+
         var end = this.syntaxReader.read_key_word();
-    
-        if(end = "end") {
-            this.syntaxReader.skip_newlines_blankspace();
+        console.log(end);
 
-            var block_name = this.syntaxReader.read_name();
+        if(end == "end") {
 
             this.syntaxReader.skip_newlines_blankspace();
 
-            var amount = this.syntaxReader.read_amount();
+            var syntaxCheck = this.syntaxReader.read_key_word();
 
-            this.syntaxReader.skip_newlines_blankspace();
-            this.syntaxReader.skip_next_char(); // Skip the ;
-
+            if(syntaxCheck==":") {
+                this.syntaxReader.skip_newlines_blankspace();
+                var name = this.syntaxReader.read_name();
+                var amount = this.syntaxReader.read_amount();
+                //console.log(name);
+                //console.log(amount);
+                this.syntaxReader.skip_newlines_blankspace();
+                this.syntaxReader.skip_next_char(); // Skip the ;
+            }
+            else {
+                this.syntaxReader.error("Wrong syntax, did you forget : ? ");
+            }
         } else {
-            this.syntaxReader.error("Expected keyword end ");
+            this.syntaxReader.error("expected keyword end ");
         }
 
     }
