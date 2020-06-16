@@ -200,7 +200,6 @@ function get_previous_block(package, nrBlocks) {
 
     if(name == "ALL") {
         return name;
-
     }
     else {
         nrBlocks.pop();
@@ -212,7 +211,7 @@ function get_previous_block(package, nrBlocks) {
         }
     }
 }
-
+/*
 function go_home(package) {
     var name = document.getElementById("selected-package").innerHTML;
     for(var i = 0; i < window.packages.length; i++) {
@@ -221,7 +220,7 @@ function go_home(package) {
         }
     }
 }
-
+*/
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
 }
