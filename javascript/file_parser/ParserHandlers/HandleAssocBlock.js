@@ -35,7 +35,6 @@ class HandleAssocBlock extends HandleAbstractBlock {
         this.syntaxReader.skip_newlines_blankspace();
 
         var end = this.syntaxReader.read_key_word();
-        console.log(end);
 
         if(end == "end") {
 
@@ -47,8 +46,6 @@ class HandleAssocBlock extends HandleAbstractBlock {
                 this.syntaxReader.skip_newlines_blankspace();
                 var name = this.syntaxReader.read_name();
                 var amount = this.syntaxReader.read_amount();
-                //console.log(name);
-                //console.log(amount);
                 this.syntaxReader.skip_newlines_blankspace();
                 this.syntaxReader.skip_next_char(); // Skip the ;
             }
