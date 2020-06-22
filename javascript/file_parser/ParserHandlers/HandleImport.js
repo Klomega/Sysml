@@ -1,3 +1,3 @@
-class HandleImport {
+class HandleImport extends HandleValName {
 
 }

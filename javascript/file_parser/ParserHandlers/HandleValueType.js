@@ -2,9 +2,16 @@
  * Handles the value type key word
  */
 class HandleValueType extends HandleValue{
+
+    handle_value_type() {
+        this.syntaxReader.skip_newlines_blankspace();
+        var value_name = this.syntaxReader.read_key_word();
+
+    }
     /**
      * Handles the value type key word
      */
+    /*
     handle_value_type() {
         this.syntaxReader.skip_newlines_blankspace();
         var type = this.syntaxReader.read_key_word();
@@ -25,7 +32,7 @@ class HandleValueType extends HandleValue{
         
 
     }
-
+*/
     /**
      * Handles the values inside a Value Type
      * 

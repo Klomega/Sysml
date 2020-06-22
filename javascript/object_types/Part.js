@@ -7,13 +7,18 @@ class Part {
     /**
      * Constructor for the Part object
      * @param {String} name 
-     * @param {Block} block 
-     * @param {int} amount 
+     * @param {Block} block
+     * @param {Part} parts
+     * @param {int} amount
+     * @param {int} upperAmount
      */
-    constructor(name, block, amount) {
+    constructor(name, block,parts, type, amount,upperAmount ) {
         this.name = name;
         this.block = block;
+        this.parts = parts;
+        this.type = type;
         this.amount = amount;
+        this.upperAmount = upperAmount;
 
         // For the usecase of Engineering processes part references is also used
         this.part_references = Array();
@@ -39,4 +44,5 @@ class Part {
     get_position_size() {
         return [this.x, this.y, this.width, this.height];
     }
+
 }

@@ -76,6 +76,18 @@ class SyntaxReader {
         return parseInt(amount_brackets.slice(1, -1));
     }
 
+    read_from_to_amount() {
+        var amount_brackets = this.read_key_word();
+        var lower_bound = amount_brackets[0];
+        var upper_bound = amount_brackets[amount_brackets.length-2];
+
+        if(lower_bound === upper_bound){
+            upper_bound = lower_bound;
+            return [lower_bound, upper_bound];
+        } else {
+            return [lower_bound, upper_bound];
+        }
+    }
 
     /**
      * Skips newline and blank spaces based on the char in the space_newline_chars array

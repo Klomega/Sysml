@@ -11,7 +11,8 @@ class Block  {
     constructor(name) {
         this.name = name;
         this.parts = Array();
-        this.values = Array();
+        this.value = {};
+        //this.values = Array();
         this.value_types = Array();
         this.references = Array();
         this.links = Array();
@@ -56,11 +57,14 @@ class Block  {
     }
 
     /**
-     *  Add a string value to the array
-     * @param {String} value 
+     *  Add a string value and a property to the dictionary
+     * @param {String} value
+     * @param {String} property
      */
-    add_value(value) {
-        this.values.push(value);
+    add_value(value, property) {
+        this.value[value] = property;
+
+        //this.values.push(value);
     }
 
     /**

@@ -8,7 +8,7 @@ class Parser extends HandleValueType{
 
         How the inheritance is implemented
 
-        Parser <- HandleValueType <- HandleValue <- HandleRef <- HandlePart <- HandleLink <- HandleBlockContent <- HandleBlock <- HandleAssocBlock <- HandleAbstractBlock <- HandleValName 
+        Parser <- HandleValueType <- HandleValue <- HandleRef <- HandlePart <- HandleLink <- HandleBlockContent <- HandleBlock <- HandleAssocBlock <- HandleAbstractBlock <- HandleValName <- HandleImport
 
     */
 
@@ -46,16 +46,21 @@ class Parser extends HandleValueType{
                                         // I think that is fixed?
                     this.syntaxReader.skip_newlines_blankspace();
                 }
-                
 
                 switch(next_keyword) {
                     case "package":
                         this.handle_package();
                         break;
+                    case "import":
+                        this.handle_import();
+                        break;
                     case "block":
                         this.handle_block();
                         break;
-                    case "value": // since this will be in the package and not inside a block, this will be a value type
+                    case "part":
+                        this.handle_own_part(); // parts can be outside a block in some cases and needs a function for it
+                        break;
+                    case "value":
                         this.handle_value_type();
                         break;
                     case "assoc":
