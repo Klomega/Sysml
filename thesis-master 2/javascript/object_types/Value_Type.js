@@ -1,26 +1,19 @@
 
 /**
- * Represents a Part object. Will contain a name, an amount and a referece to a block 
+ * Represents a Value Type. Contains a definition for the Value Type
  */
-class Part {
+class Value_Type {
 
     /**
-     * Constructor for the Part object
+     * Constructor for the Value_Type Object
      * @param {String} name 
-     * @param {Block} block 
      * @param {int} amount 
+     * @param {Value_Type_Definition} value_type_definition 
      */
-    constructor(name, block, amount, upper_amount) {
+    constructor(name, amount, value_type_definition) {
         this.name = name;
-        this.block = block;
         this.amount = amount;
-        this.upper_amount = upper_amount
-
-        //If a part contains other parts
-        this.parts = Array();
-
-        // For the usecase of Engineering processes part references is also used
-        this.part_references = Array();
+        this.value_type_definition = value_type_definition;
     }
 
     /**
