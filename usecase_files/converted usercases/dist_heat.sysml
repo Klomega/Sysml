@@ -1,0 +1,17 @@
+package 'Fourth Generation District Heating' {
+	
+	
+	block 'Data management';
+	block Production ;
+	block Distribution;
+	
+
+	block 'District Heating' {
+		part management: 'DH Management'::Management[1];
+		part production: Production[1];
+		part distribution : Distribution[1];
+		part consumption : 'DH Consumption'::Consumption[1];
+		
+	}
+
+} 

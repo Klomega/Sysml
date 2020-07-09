@@ -441,7 +441,7 @@ class GraphicalView {
     get_block_box(x, y, width, height, text, values, parts, block) {
         var block_tag = "<<block>>\n";
         text = text.replace("::", "::\n").replace("'", "").replace("'", "");
-        if(values == "") {
+        if(values == "" || values === undefined) {
             text += "\n";
         } else {
             text += "\n ______________ \nValues : \n"+  values;
@@ -450,7 +450,7 @@ class GraphicalView {
             text += "\n ______________ \nParts : \n " + parts;
         } 
         
-        if(values == "" && parts == "") {
+        if(values == "" || values === undefined && parts == "" || parts === undefined ) {
             text = text; // change this..
         } else {
             text + "\n ______________ \n values: \n" + values + "\n ______________ \n parts: \n" + parts;

@@ -7,22 +7,36 @@ class Part {
     /**
      * Constructor for the Part object
      * @param {String} name 
-     * @param {Block} block
-     * @param {Part} parts
-     * @param {int} amount
-     * @param {int} upperAmount
+     * @param {Block} block 
+     * @param {int} amount 
      */
-    constructor(name, block,parts, type, amount,upperAmount ) {
+    constructor(name, block, amount, upper_amount) {
         this.name = name;
         this.block = block;
-        this.parts = parts;
-        this.type = type;
         this.amount = amount;
-        this.upperAmount = upperAmount;
+        this.upper_amount = upper_amount
+
+        //If a part contains other parts
+        this.parts = Array();
+        this.subsets = Array();
+        this.redefines = Array();
 
         // For the usecase of Engineering processes part references is also used
         this.part_references = Array();
     }
+
+    get_part_block() {
+        return this.block;
+    }
+
+    add_redefine(part) {
+        this.redefines.push(part);
+    }
+
+    add_subset(part) {
+        this.subsets.push(part);
+    }
+
 
     /**
      * Add a position in the graphical view
@@ -44,5 +58,4 @@ class Part {
     get_position_size() {
         return [this.x, this.y, this.width, this.height];
     }
-
 }
