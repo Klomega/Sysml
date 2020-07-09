@@ -16,8 +16,6 @@ class Block  {
         this.references = Array();
         this.links = Array();
 
-        this.subset = Array();
-
         this.special_links = Array();
 
         this.isPart_count = 0;
@@ -155,39 +153,15 @@ class Block  {
         }
     }
 
-    /**
-     *
-     * Add the subset block into the array subset
-     * @param subset_block
-     */
-    add_subset(subset_block) {
-        this.subset.push(subset_block);
-    }
-
-    /**
-     * Return true if the block has a subset
-     * @returns {boolean}
-     */
-    has_subset() {
-        if (this.subset.length > 0) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
 
     get_block_description() {
         var s = "\n\n" + this.in_package.name + " ::" + this.name + "\n";
+
         s += "______________________________\n\nparts : \n";
         for(var i = 0; i < this.parts.length; i++) {
-            if(this.parts[i].upper_amount === undefined){
-                s += this.parts[i].name + " : " + this.parts[i].block.name + " " + "[" + this.parts[i].amount + "]" + "\n";
-            } else {
-            s += this.parts[i].name + " : " + this.parts[i].block.name + " " + "[" + this.parts[i].amount + ".." + this.parts[i].upper_amount + "]" + "\n";
-            }
+            s += this.parts[i].name + " : " + this.parts[i].block.name + " " + this.parts[i].amount + "\n";
         }
+
         s += "______________________________\nreferences : \n";
         for(var i = 0; i < this.references.length; i++) {
             s += this.references[i].name + "\n";
@@ -200,12 +174,8 @@ class Block  {
 
         s += "______________________________\nvalues : \n";
         for(var i = 0; i < this.values.length; i++) {
-            if(this.values[i] === undefined ) {
-                s += "\n";
-            } else {
             s += this.values[i] + "\n";
         }
-    }
 
         s += "______________________________\nvalue types : \n";
         for(var i = 0; i < this.value_types.length; i++) {

@@ -10,33 +10,14 @@ class Part {
      * @param {Block} block 
      * @param {int} amount 
      */
-    constructor(name, block, amount, upper_amount) {
+    constructor(name, block, amount) {
         this.name = name;
         this.block = block;
         this.amount = amount;
-        this.upper_amount = upper_amount
-
-        //If a part contains other parts
-        this.parts = Array();
-        this.subsets = Array();
-        this.redefines = Array();
 
         // For the usecase of Engineering processes part references is also used
         this.part_references = Array();
     }
-
-    get_part_block() {
-        return this.block;
-    }
-
-    add_redefine(part) {
-        this.redefines.push(part);
-    }
-
-    add_subset(part) {
-        this.subsets.push(part);
-    }
-
 
     /**
      * Add a position in the graphical view

@@ -20,6 +20,27 @@ class bdd_Package {
     }
 
     /**
+     * Add a position in the graphical view
+     * @param {int} x
+     * @param {int} y
+     * @param {int} width
+     * @param {int} height
+     */
+    set_position_size(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+    /**
+     * Gets the position that is set using set_position_size() method
+     */
+    get_position_size() {
+        return [this.x, this.y, this.width, this.height];
+    }
+
+    /**
      * Adds a block to the blocks array
      * @param {Block} block 
      */
@@ -79,6 +100,29 @@ class bdd_Package {
 
     add_part(part) {
         this.parts.push(part);
+    }
+
+    get_parts_string() {
+        if(this.parts.length == 0) {
+            return "";
+        } else {
+            var s = "";
+            for(var i = 0; i < this.parts.length; i++) {
+                s += this.parts[i].name + ": " + this.parts[i].block.name + "\n";
+            }
+            return s;
+        }
+    }
+
+    /**
+     * Returns true is the block got parts
+     */
+    has_parts() {
+        if(this.parts.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
     
 }

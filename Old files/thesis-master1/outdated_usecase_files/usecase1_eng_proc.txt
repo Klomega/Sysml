@@ -1,0 +1,162 @@
+package 'Use-case Engineering Processes' {
+	block Tool;
+	block Requirements {
+		part tool: Tool[1];
+	}
+	block 'Functional Design';
+	block 'Procurement & Engineering';
+	block 'Deployment & Commissioning';
+	block 'Operation & Management' {
+		part t1: Tool[1];
+		part t2: Tool[1];
+
+	}
+	block 'Maintenance Decommission & Recycling';
+	block Evolution {
+		part t3: Tool[1];
+		part t4: Tool[1];
+		part t5: Tool[1];
+	}
+	block 'Training & Education';
+
+
+	block EndUser {
+		part req: Requirements [1]{
+			ref '': funcdes[1];
+			ref '': req1[1];
+		}
+		part funcdes: 'Functional Design'[1] {
+			ref '': proceng[1];
+		}
+		part proceng: 'Procurement & Engineering'[1] {
+			ref '': depCom[1];
+		}
+		part depCom : 'Deployment & Commissioning'[1]{
+			ref '': opman[1];
+		}
+		part opman : 'Operation & Management'[1] {
+			ref '': madere[1];
+		}
+		part madere: 'Maintenance Decommission & Recycling'[1]{
+			ref '': evo[1];
+		}
+		part evo: Evolution[1]{
+			ref '': traedu[1];
+		}
+		part traedu: 'Training & Education'[1]; 
+
+	}
+
+	block Architect {
+		part req1: Requirements [1]{
+			ref '': funcdes1[1];
+		}
+		part funcdes1: 'Functional Design'[1] {
+			ref '': proceng1[1];
+			ref '': req2[1];
+		}
+		part proceng1: 'Procurement & Engineering' [1]{
+			ref '': depCom1[1];
+		}
+		part depCom1 : 'Deployment & Commissioning' [1]{
+			ref '': opman1[1];
+		}
+		part opman1 : 'Operation & Management' [1]{
+			ref '': madere1[1];
+		}
+		part madere1: 'Maintenance Decommission & Recycling' [1]{
+			ref '': evo1[1];
+		}
+		part evo1: Evolution [1] {
+			ref '': traedu1[1];
+		}
+		part traedu1: 'Training & Education' [1]; 
+	}
+
+	block Lindbäck {
+		part req2: Requirements [1]{
+			ref '': funcdes2[1];
+		}
+		part funcdes2: 'Functional Design'[1] {
+			ref '': proceng2[1];
+		}
+		part proceng2: 'Procurement & Engineering' [1]{
+			ref '': depCom2[1];
+		}
+		part depCom2 : 'Deployment & Commissioning' [1]{
+			ref '': opman2[1];
+		}
+		part opman2 : 'Operation & Management' [1]{
+			ref '': madere2[1];
+		}
+		part madere2: 'Maintenance Decommission & Recycling' [1]{
+			ref '': evo2[1];
+		}
+		part evo2: Evolution [1] {
+			ref '': traedu2[1];
+		}
+		part traedu2: 'Training & Education' [1];
+
+	}
+
+	block Podcomp {
+		part req3: Requirements [1]{
+			ref '': funcdes3[1];
+		}
+		part funcdes3: 'Functional Design'[1] {
+			ref '': proceng3[1];
+		}
+		part proceng3: 'Procurement & Engineering' [1]{
+			ref '': depCom3[1];
+		}
+		part depCom3 : 'Deployment & Commissioning' [1]{
+			ref '': opman3[1];
+		}
+		part opman3 : 'Operation & Management' [1]{
+			ref '': madere3[1];
+		}
+		part madere3: 'Maintenance Decommission & Recycling' [1]{
+			ref '': evo3[1];
+		}
+		part evo3: Evolution [1] {
+			ref '': traedu3[1];
+		}
+		part traedu3: 'Training & Education' [1]; 
+
+	}
+
+	block Martinson {
+		part req4: Requirements [1]{
+			ref '': funcdes4[1];
+		}
+		part funcdes4: 'Functional Design'[1] {
+			ref '': proceng4[1];
+		}
+		part proceng4: 'Procurement & Engineering' [1]{
+			ref '': depCom4[1];
+		}
+		part depCom4 : 'Deployment & Commissioning' [1]{
+			ref '': opman4[1];
+		}
+		part opman4 : 'Operation & Management' [1]{
+			ref '': madere4[1];
+		}
+		part madere4: 'Maintenance Decommission & Recycling' [1]{
+			ref '': evo4[1];
+		}
+		part evo4: Evolution [1] {
+			ref '': traedu4[1];
+		}
+		part traedu4: 'Training & Education' [1]; 
+	}
+
+	block 'Engineering Processes' {
+		part user : EndUser;
+		part architect : Architect;
+		part lindbäck : Lindbäck;
+		part podcomp: Podcomp;
+		part martinson : Martinson;
+	}
+
+}
+

@@ -8,7 +8,7 @@ class Parser extends HandleValueType{
 
         How the inheritance is implemented
 
-        Parser <- HandleValueType <- HandleValue <- HandleSubsets <- HandleRef <- handleRedefines <- HandlePart <- HandleLink <- HandleBlockContent <- HandleBlock <- HandleAssocBlock <- HandleAbstractBlock <- HandleValName
+        Parser <- HandleValueType <- HandleValue <- HandleRef <- HandlePart <- HandleLink <- HandleBlockContent <- HandleBlock <- HandleAssocBlock <- HandleAbstractBlock <- HandleValName 
 
     */
 
@@ -68,6 +68,7 @@ class Parser extends HandleValueType{
                         break;
                     case 'part':
                         //this.active_package.add_part(this.handle_part_in_package(part));
+                        console.log("inne");
                         this.handle_part_in_package();
                         break;
                     case "}":

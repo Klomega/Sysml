@@ -28,12 +28,9 @@
     <script src="javascript/file_parser/ParserHandlers/HandleAssocBlock.js"></script>
     <script src="javascript/file_parser/ParserHandlers/HandleBlock.js"></script>
     <script src="javascript/file_parser/ParserHandlers/HandleBlockContent.js"></script>
-    <script src="javascript/file_parser/ParserHandlers/HandleImport.js"></script>
     <script src="javascript/file_parser/ParserHandlers/HandleLink.js"></script>
     <script src="javascript/file_parser/ParserHandlers/HandlePart.js"></script>
-    <script src="javascript/file_parser/ParserHandlers/HandleRedefines.js"></script>
     <script src="javascript/file_parser/ParserHandlers/HandleRef.js"></script>
-    <script src="javascript/file_parser/ParserHandlers/HandleSubsets.js"></script>
     <script src="javascript/file_parser/ParserHandlers/HandleValue.js"></script>
     <script src="javascript/file_parser/ParserHandlers/HandleValueType.js"></script>
 
@@ -45,9 +42,9 @@
     <script src="javascript/object_types/Block.js"></script>
     <script src="javascript/object_types/Part.js"></script>
     <script src="javascript/object_types/Reference.js"></script>
-    <script src="javascript/object_types/Value.js"></script>
     <script src="javascript/object_types/Value_Type.js"></script>
     <script src="javascript/object_types/Value_Type_Definition.js"></script>
+    <script src="javascript/object_types/Part_Reference.js"></script>
     <script src="javascript/object_types/Abstract_Block.js"></script>
     
     <script src="javascript/graphical_view/GraphicalView.js"></script>
@@ -102,10 +99,6 @@
                             <button class="btn btn-info outline dropdown-toggle" type="button" data-toggle="dropdown" id="selected-block">Select Block
                                 <span class="caret"></span> </button>
                             <ul class="dropdown-menu" id="block-list"></ul> 
-                        </div>
-                        <div class="row">
-                            <button class="btn outline btn-primary" id="message" onclick="previous_draw()">Back</button>
-
                         </div>
                     </div>
         
@@ -178,7 +171,7 @@
 
     <div id="mySidepanel" class="sidepanel" style="z-index: 2;">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
-        <a class="btn outline btn-info howto-btn" href="how_to_use.html" target="_blank"><p style="font-size: xx-small;">How to use it</p></a>
+
         <!-- List all loaded files -->
         <div class="container file-container" id="file_list"></div>
 
@@ -211,7 +204,6 @@
         
     </div>
 
-    
     
 
 </body>

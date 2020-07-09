@@ -27,7 +27,7 @@ class SyntaxReader {
             }
         }
 
-        this.skip_newlines_blankspace();
+        //this.skip_newlines_blankspace();
         return next_key_word;
 
     }
@@ -69,30 +69,10 @@ class SyntaxReader {
 
     /**
      * Reads and removes the brackets and returns an int value with the amount
-     * If there are 2 values it will return them as an array where the smaller value
-     * is the first and the bigger value is the greater.
      */
     read_amount() {
         var amount_brackets = this.read_key_word();
-        for (var i = 0; i < amount_brackets.length; i++) {
-            if (amount_brackets[i] === ".") {
-                let lower_bound = parseInt(amount_brackets.slice(1, i));
-                let upper_bound = parseInt(amount_brackets.slice(i + 2, amount_brackets.length));
-                return [lower_bound, upper_bound];
-            } else if (amount_brackets[i] === "]") {
-                return parseInt(amount_brackets.slice(1, amount_brackets.length - 1));
-            }
-        }
-
-        /*
-        if(amount_brackets.length === 3) {
-            this.skip_newlines_blankspace();
-            return parseInt(amount_brackets.slice(1, -1));
-        } else {
-            var lower_bound = parseInt(amount_brackets.slice(1, -1));
-            var upper_bound = parseInt(amount_brackets.slice(4, amount_brackets.length-1));
-            return [lower_bound, upper_bound];
-        }*/
+        return parseInt(amount_brackets.slice(1, -1));
     }
 
 
@@ -162,6 +142,5 @@ class SyntaxReader {
     error(message) {
         this.reader.error(message);
     }
-
 
 }
