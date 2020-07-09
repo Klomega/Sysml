@@ -11,11 +11,12 @@ class Block  {
     constructor(name) {
         this.name = name;
         this.parts = Array();
-        this.value = {};
-        //this.values = Array();
+        this.values = Array();
         this.value_types = Array();
         this.references = Array();
         this.links = Array();
+
+        this.subset = Array();
 
         this.special_links = Array();
 
@@ -57,14 +58,11 @@ class Block  {
     }
 
     /**
-     *  Add a string value and a property to the dictionary
-     * @param {String} value
-     * @param {String} property
+     *  Add a string value to the array
+     * @param {String} value 
      */
-    add_value(value, property) {
-        this.value[value] = property;
-
-        //this.values.push(value);
+    add_value(value) {
+        this.values.push(value);
     }
 
     /**
@@ -157,15 +155,39 @@ class Block  {
         }
     }
 
+    /**
+     *
+     * Add the subset block into the array subset
+     * @param subset_block
+     */
+    add_subset(subset_block) {
+        this.subset.push(subset_block);
+    }
+
+    /**
+     * Return true if the block has a subset
+     * @returns {boolean}
+     */
+    has_subset() {
+        if (this.subset.length > 0) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
 
     get_block_description() {
         var s = "\n\n" + this.in_package.name + " ::" + this.name + "\n";
-
         s += "______________________________\n\nparts : \n";
         for(var i = 0; i < this.parts.length; i++) {
-            s += this.parts[i].name + " : " + this.parts[i].block.name + " " + this.parts[i].amount + "\n";
+            if(this.parts[i].upper_amount === undefined){
+                s += this.parts[i].name + " : " + this.parts[i].block.name + " " + "[" + this.parts[i].amount + "]" + "\n";
+            } else {
+            s += this.parts[i].name + " : " + this.parts[i].block.name + " " + "[" + this.parts[i].amount + ".." + this.parts[i].upper_amount + "]" + "\n";
+            }
         }
-
         s += "______________________________\nreferences : \n";
         for(var i = 0; i < this.references.length; i++) {
             s += this.references[i].name + "\n";
@@ -178,8 +200,12 @@ class Block  {
 
         s += "______________________________\nvalues : \n";
         for(var i = 0; i < this.values.length; i++) {
+            if(this.values[i] === undefined ) {
+                s += "\n";
+            } else {
             s += this.values[i] + "\n";
         }
+    }
 
         s += "______________________________\nvalue types : \n";
         for(var i = 0; i < this.value_types.length; i++) {

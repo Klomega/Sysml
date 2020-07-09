@@ -21,6 +21,13 @@ class Package_GraphicalView extends GraphicalView{
             }
         }
 
+        for(var i = 0; i < _package.parts.length; i++) {
+                if(!this.drawn_blocks.includes(_package.parts[i].blocks)) {
+                    _package.parts[i].block.set_position_size(x, y, size, size);
+                    this.block_layer.add(this.get_block_box(x, y, size, size, _package.parts[i].name, _package.parts[i].block.get_parts_string(), "", _package));
+            }
+        }
+
         for(var i = 0; i < with_zero_incoming.length; i++) {
             if(!this.drawn_blocks.includes(with_zero_incoming[i]) ) {
                 with_zero_incoming[i].set_position_size(x, y, size ,size);
@@ -28,7 +35,7 @@ class Package_GraphicalView extends GraphicalView{
                 this.drawn_blocks.push(with_zero_incoming[i]);
 
                 for(var j = 0; j < with_zero_incoming[i].parts.length; j++) {
-                    y += 2 * size;
+                    y += 2 * size; //y innan
                     if(!this.drawn_blocks.includes(with_zero_incoming[i].parts[j].block)) {
                         with_zero_incoming[i].parts[j].block.set_position_size(x, y, size ,size);
                         this.block_layer.add(this.get_block_box(x, y, size, size, with_zero_incoming[i].parts[j].block.name, with_zero_incoming[i].parts[j].block.get_value_string(), "", with_zero_incoming[i].parts[j].block));
@@ -76,6 +83,7 @@ class Package_GraphicalView extends GraphicalView{
         }
 
         // Draw the Value Types
+        //may need to add a new path so values inside value type can been seen.
         for(var i = 0; i < _package.value_type_definitions.length; i++) {
             _package.value_type_definitions[i].set_position_size(x,y, size, size);
             this.block_layer.add(this.get_value_type_box(x,y, size, size, _package.value_type_definitions[i].name, _package.value_type_definitions[i].get_value_string()));
@@ -95,7 +103,9 @@ class Package_GraphicalView extends GraphicalView{
                 }
             }
             for(var p = 0; p < this.drawn_blocks[i].value_types.length; p++) {
-                this.line_layer.add(this.get_part_arrow(this.drawn_blocks[i], this.drawn_blocks[i].value_types[p].value_type_definition, this.drawn_blocks[i].value_types[p].name, false));
+                console.log(this.drawn_blocks[i].value_types[p]);
+                this.line_layer.add(this.get_part_arrow(this.drawn_blocks[i], this.drawn_blocks[i].value_types[p], this.drawn_blocks[i].value_types[p].name, false));
+                //to was this.drawn_blocks[i].value_types[p].value_type_definition before
             }
             
         }

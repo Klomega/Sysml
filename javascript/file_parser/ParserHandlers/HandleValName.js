@@ -1,19 +1,21 @@
 /**
- * Handles a value that is assigned without the keyword value
+ * Assign a value to the current block
  */
 class HandleValName {
     /**
-     * Handles a value that is assigned without a keyword
+     * Set a value and it's property and store it in values in Block
      * @param {Block} block 
      * @param {String} value_name 
      */
     handle_val_name(block, value_name){
 
         this.syntaxReader.skip_newlines_blankspace();
-        var colon = this.syntaxReader.read_next_char(); // read the :
-        var greater_than = this.syntaxReader.read_next_char(); // read the >
 
-        if(colon == ":" && greater_than == ">") {
+        this.syntaxReader.skip_newlines_blankspace();
+
+        var colon = this.syntaxReader.read_next_char(); // read the :
+
+        if(colon == ":") {
             this.syntaxReader.skip_newlines_blankspace();
             var value_type = this.syntaxReader.read_name();
             
@@ -26,7 +28,7 @@ class HandleValName {
             this.syntaxReader.skip_newlines_blankspace();
 
         } else {
-            this.syntaxReader.error("Expected :>");
+            this.syntaxReader.error("Expected :");
         }
 
     }

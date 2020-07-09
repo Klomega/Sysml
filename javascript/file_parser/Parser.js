@@ -8,7 +8,7 @@ class Parser extends HandleValueType{
 
         How the inheritance is implemented
 
-        Parser <- HandleValueType <- HandleValue <- HandleRef <- HandlePart <- HandleLink <- HandleBlockContent <- HandleBlock <- HandleAssocBlock <- HandleAbstractBlock <- HandleValName <- HandleImport
+        Parser <- HandleValueType <- HandleValue <- HandleSubsets <- HandleRef <- handleRedefines <- HandlePart <- HandleLink <- HandleBlockContent <- HandleBlock <- HandleAssocBlock <- HandleAbstractBlock <- HandleValName
 
     */
 
@@ -52,15 +52,12 @@ class Parser extends HandleValueType{
                         this.handle_package();
                         break;
                     case "import":
-                        this.handle_import();
+                        this.handle_import()
                         break;
                     case "block":
                         this.handle_block();
                         break;
-                    case "part":
-                        this.handle_own_part(); // parts can be outside a block in some cases and needs a function for it
-                        break;
-                    case "value":
+                    case "value": // since this will be in the package and not inside a block, this will be a value type
                         this.handle_value_type();
                         break;
                     case "assoc":
@@ -68,6 +65,10 @@ class Parser extends HandleValueType{
                         break;
                     case "abstract":
                         this.handle_abstract_block();
+                        break;
+                    case 'part':
+                        //this.active_package.add_part(this.handle_part_in_package(part));
+                        this.handle_part_in_package();
                         break;
                     case "}":
                         // Done
@@ -97,8 +98,6 @@ class Parser extends HandleValueType{
 
     }
 
-
-    
 
     /**
      * Returns the package with the name that matches the parameter name

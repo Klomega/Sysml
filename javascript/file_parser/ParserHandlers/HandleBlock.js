@@ -31,14 +31,22 @@ class HandleBlock extends HandleAssocBlock{
 
                     active_block.name = old_block.name; */
 
+
+                    /*
                     active_block = this.get_block_from_abstract_block(active_block.name, this.get_abstract_block_by_name(this.syntaxReader.read_name()));
 
                     this.replace_block_by_name(active_block.name, active_block);
-                    
-                    next_char = this.syntaxReader.read_next_char();
+                     */
+                    let subset_block = this.syntaxReader.read_name();
+                    active_block.add_subset(subset_block);
                     this.syntaxReader.skip_newlines_blankspace();
+                    next_char = this.syntaxReader.read_next_char();
                     if(next_char == "{"){
                         this.handle_block_content(active_block);
+                    } else if (next_char === ";") {
+                        this.syntaxReader.skip_newlines_blankspace();
+                        console.log(active_block);
+                        return;
                     }
                 } else {
                     this.syntaxReader.error("Expected :> ");

@@ -4,22 +4,24 @@
 class HandleAssocBlock extends HandleAbstractBlock {
     /**
      * Handles the assoc_block key word
-     * 
-     * Not finished since it is not adding the assoc_block to the package...
+     * Creates an assocblock and connects two blocks as end points
+     *
      */
     handle_assoc_block() {
-        //this.syntaxReader.error("Assoc blocks is not implemented");
 
         this.syntaxReader.skip_newlines_blankspace();
         var block_key_word = this.syntaxReader.read_key_word(); // Should be block
         if(block_key_word == 'block') {
 
             this.syntaxReader.skip_newlines_blankspace();
-            var blockName = this.syntaxReader.read_key_word();
+            var block_name = this.syntaxReader.read_key_word();
+            block_name = new Assoc_Block(block_name);
             this.syntaxReader.read_next_char(); // {
 
-            this.handle_end();
-            this.handle_end();
+            //Saves endpoints in an array, the pair right now is even and uneven
+            //for example element 0 and element 1 is a pair, 6 and 7 etc.
+            this.handle_end(block_name);
+            this.handle_end(block_name);
 
             this.syntaxReader.skip_newlines_blankspace();
             this.syntaxReader.read_next_char(); // }
@@ -31,7 +33,7 @@ class HandleAssocBlock extends HandleAbstractBlock {
     /**
      * Handles the end keyword inside an assoc block
      */
-    handle_end() {
+    handle_end(block_name) {
         this.syntaxReader.skip_newlines_blankspace();
 
         var end = this.syntaxReader.read_key_word();
@@ -46,6 +48,7 @@ class HandleAssocBlock extends HandleAbstractBlock {
                 this.syntaxReader.skip_newlines_blankspace();
                 var name = this.syntaxReader.read_name();
                 var amount = this.syntaxReader.read_amount();
+                block_name.set_part(name, amount);
                 this.syntaxReader.skip_newlines_blankspace();
                 this.syntaxReader.skip_next_char(); // Skip the ;
             }

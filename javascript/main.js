@@ -58,8 +58,7 @@ $(document).ready(function() {
 });
 // -------------------------------
 
-var nrBlocks =[];
-
+var nrBlocks = [];
 
 /**
  * Called when clicking on the draw / render button
@@ -92,31 +91,31 @@ function draw() {
     }
 
     else if(document.getElementById("ep").checked) {
-        var draw_part_arrows = document.getElementById("draw-part").checked;
-        var draw_references = document.getElementById("draw-ref").checked;
-        var draw_links = document.getElementById("draw-links").checked;
+            var draw_part_arrows = document.getElementById("draw-part").checked;
+            var draw_references = document.getElementById("draw-ref").checked;
+            var draw_links = document.getElementById("draw-links").checked;
 
-        var g_w = new Special_BDD_GraphicalView(wind_width, wind_height);
-        g_w.draw_special_bdd(package, block, 30, 30, size, parseInt(document.getElementById("depth-from").value) - 1, depth -1, draw_part_arrows, draw_references, draw_links);
+            var g_w = new Special_BDD_GraphicalView(wind_width, wind_height);
+            g_w.draw_special_bdd(package, block, 30, 30, size, parseInt(document.getElementById("depth-from").value) - 1, depth -1, draw_part_arrows, draw_references, draw_links);
 
     } else if(document.getElementById("ibd").checked) {
-
-        var g_w = new IBD_GraphicalView(wind_width, wind_height);
-        g_w.draw_ibd(package, block, 30, 30, size , depth + 1);
-
-
+        
+            var g_w = new IBD_GraphicalView(wind_width, wind_height);
+            g_w.draw_ibd(package, block, 30, 30, size , depth + 1);
+    
+        
     } else if(document.getElementById("bdd").checked) {
 
-        var draw_references = document.getElementById("draw-ref_bdd").checked;
-        var draw_links = document.getElementById("draw-links_bdd").checked;
+            var draw_references = document.getElementById("draw-ref_bdd").checked;
+            var draw_links = document.getElementById("draw-links_bdd").checked;
 
-        var g_w = new BDD_GraphicalView(wind_width, wind_height);
-        g_w.draw_bdd(package, block, 30, 30, size, depth + 1, draw_references, draw_links);
-
+            var g_w = new BDD_GraphicalView(wind_width, wind_height);
+            g_w.draw_bdd(package, block, 30, 30, size, depth + 1, draw_references, draw_links);
+        
     } else {
         alert("Please select a diagram type");
     }
-
+    
 }
 
 function previous_draw() {
@@ -172,8 +171,6 @@ function previous_draw() {
 
 }
 
-
-
 function get_active_package() {
     var name = document.getElementById("selected-package").innerHTML;
     for(var i = 0; i < window.packages.length; i++) {
@@ -182,6 +179,7 @@ function get_active_package() {
         }
     }
 }
+
 
 function get_active_block(package) {
     var name = document.getElementById("selected-block").innerHTML;
@@ -211,16 +209,7 @@ function get_previous_block(package, nrBlocks) {
         }
     }
 }
-/*
-function go_home(package) {
-    var name = document.getElementById("selected-package").innerHTML;
-    for(var i = 0; i < window.packages.length; i++) {
-        if(package.blocks[i].name == name) {
-            return package.block[i-1];
-        }
-    }
-}
-*/
+
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
 }

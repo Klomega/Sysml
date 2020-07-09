@@ -1,7 +1,7 @@
 /**
  * Handles the ref keyword
  */
-class HandleRef extends HandlePart{
+class HandleRef extends HandleRedefines{
     /**
      * Will read the reference and add the block parameter to the return Reference object
      * @param {Block} block 
