@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to use it</title>
+</head>
+<style>
+    a {
+        margin-left: 3em;
+    }
+    img {
+        max-width: 400px;
+    }
+</style>
+<body>
+    <a href="#useit">How to use it</a>
+    <a href="#textual_syntax">Textual Syntax</a>
+    <a href="usecase_files">Download Example files</a>
+    
+    <hr> <hr> 
+    <h1 id="useit">How to use it</h1>
+
+    <p>
+        Open the side menu to select the files to use, or open the editor for writing a smaller example <br>
+        When the side menu is closed all the files will be parsed. If no error alert show up, then the packages <br>
+        should be visible in the top menu. <br> 
+        <img src="howto_imgs/side_menu.png" alt="The side menu" style="width: 250px">
+        <br>
+        In the top menu one can select which package to use, and which block to use as a starting point. <br>
+        The depth and the size of the boxes can be selected using the sliders. <br>
+        Then there are three opinons for the diagram type. Two are BDDs and one IBD. <br>
+        One of the BDD diagrams will use two depth values and only draw the blocks that are in the range. <br>
+        <img src="howto_imgs/topmenu.png" alt="The top menu">
+        <br>
+        The fourth option for drawing the diagram is to select 'ALL' when selecting the block. <br>
+        This will draw all the blocks as a BDD. 
+        <br>
+        <br>
+        It is possible to Zoom in on the diagram using the scroll wheel. It is also possible to move the diagram <br>
+        by clicking and dragging. <br>
+        Hovering over a block will show a information box of the block. <br>
+        Clicking on a block will draw a new diagram, with the active settings in the top menu and with the clicked block <br>
+        as the starting point.
+
+        
+    </p>
+        <img src="howto_imgs/bdd.png" alt="A bdd"><br>
+        Example of an Block Definition Diagram <br> <br> <br>
+        <img src="howto_imgs/ibd.png" alt="An ibd"> <br>
+        Example of an Internal Block Diagram <br> <br> <br>
+        <img src="howto_imgs/info_box.png" alt="The info box"><br>
+        The info box <br> <br>
+
+    <hr> 
+    <h1 id="textual_syntax">Textual Syntax</h1>
+    <h3>package</h3>
+    <p>A frame containing blocks, value types and abstract blocks <br>
+        <PRE>
+            package << name >> { <br>
+                << package content here>> <br> 
+            }
+        </PRE>
+            
+    </p>
+    
+   
+    <h3>block</h3>
+    A block can be declared inside a package <br>
+    A block can contain parts, links, references, values or references to value types <br>
+    <PRE>
+        empty block:
+            block << name >>; 
+            
+            
+        block with content:
+            block << name >> { 
+                << block content here >> 
+            }
+        
+    </PRE>
+    
+    
+    <h3>abstract block</h3>
+    A block can be declared as abstract making it possible for other blocks to inherit the content. <br>
+    <PRE>
+        empty abstract block:
+            abstract block << name >>; 
+            
+            
+        abstract block with content:
+            abstract block << name >> { 
+                << block content here >> 
+            }
+
+    </PRE>
+    
+    For a block to inherit an abstract block use the ":>"
+    <PRE>
+            block << name >> :> << Name of block to inherit from >>; 
+    </PRE>
+    The block can override inherited parts by assigning a new part and use the same part name. <br>
+    <i>
+        Note that the abstract block has to be declared in the same package
+    and before the block that should inherit
+    </i> <br>
+    
+    <h3>value type</h3>
+    A value type contains values (See value below) <br>
+    <PRE>
+        value type << name >> { 
+            << values here >> 
+        }
+    </PRE>
+    
+    <h3>value</h3>
+    A value can be content of a block or a value type. A value is not the same as a value type. <br>
+    A value type can be referenced to using the value keyword. 
+    <PRE>
+        For adding a value to a block
+            << name >> :> << Type >>;
+            
+        For making a reference to a value type
+            value << name >> : << value_type >> [<< amount >>];
+    </PRE>
+    
+    <h3>part</h3>
+    A part can be content of a block. <br>
+    <PRE>
+            part << name >> : << block >> [<< amount >>];
+    </PRE>
+        
+    It is possible to assign a part that references a block defined in another package. In that case the "::" should be used. <br>
+    <PRE>
+        part << name >> : << package_name >>::<< block >> [<< amount >>];
+    </PRE>
+        
+    <h3>ref</h3>
+    A block can reference another block
+    <PRE>
+        ref << name >> : << block >> [<< amount >>];
+    </PRE>
+        
+    <h3>link</h3>
+    The link is used for connecting parts. The link should be defined inside a block. <br>
+    It is using the name of a part that is a part of the block.
+    <PRE>
+        link : << relation_name >> connect << part_name_1 >> to << part_name_2 >>; 
+    </PRE>
+    
+    It is possible to assign the link to a part of the part using '::'.
+    <PRE>
+        link : << rel_name >> connect << part_of_block_name >>::<< part_name >> to << part_name_2 >>; 
+    </PRE>
+    <i> Note that the part must have been defined before they are referenced. </i>
+       
+</body>
+</html>
