@@ -74,6 +74,10 @@ class SyntaxReader {
      */
     read_amount() {
         var amount_brackets = this.read_key_word();
+        if (amount_brackets[1] === "*") {
+            let amount = "*"
+            return amount;
+        }
         for (var i = 0; i < amount_brackets.length; i++) {
             if (amount_brackets[i] === ".") {
                 let lower_bound = parseInt(amount_brackets.slice(1, i));
@@ -84,15 +88,6 @@ class SyntaxReader {
             }
         }
 
-        /*
-        if(amount_brackets.length === 3) {
-            this.skip_newlines_blankspace();
-            return parseInt(amount_brackets.slice(1, -1));
-        } else {
-            var lower_bound = parseInt(amount_brackets.slice(1, -1));
-            var upper_bound = parseInt(amount_brackets.slice(4, amount_brackets.length-1));
-            return [lower_bound, upper_bound];
-        }*/
     }
 
 

@@ -30,6 +30,7 @@ class HandlePart extends HandleLink {
         if (c_n_char === "[") {
             var amount = this.syntaxReader.read_amount();
             if (amount.length === 2) {
+               // console.log(amount[0]);
                 part.amount = amount[0];
                 part.upper_amount = amount[1];
             } else {
@@ -48,16 +49,19 @@ class HandlePart extends HandleLink {
             this.syntaxReader.skip_next_char();
             c_n_char = this.syntaxReader.read_next_char();
             // If the Block is defined in an other package
+
             if (c_n_char == ":") {
                 block_name += "::" + this.syntaxReader.read_name();
+
                 //checking if it's the shortcut of subsets or redefines
             } else if (c_n_char === ">") {
+                part.block = this.get_block_by_name(block_name);
                 c_n_char = this.syntaxReader.check_next_char();
+
                 //fetch the part that is to be redefine and add it to the current part redefines array
                 if (c_n_char === ">") {
                     this.syntaxReader.skip_next_char();
                     this.syntaxReader.skip_newlines_blankspace();
-                    part.block = this.get_block_by_name(block_name);
                     let redefinition_part_name = this.syntaxReader.read_name();
                     let redefinition_part = this.handle_redefines_part(redefinition_part_name, block)
                     part.add_redefine(redefinition_part);
@@ -66,7 +70,8 @@ class HandlePart extends HandleLink {
                 //uses the subset routine
                 this.syntaxReader.skip_newlines_blankspace();
                 let subset_part = this.handle_subsets_part(block);
-                return part.add_subset(subset_part);
+                part.add_subset(subset_part);
+                return part;
             } else {
                 this.syntaxReader.error("Expected :: or :>>");
             }
@@ -79,6 +84,7 @@ class HandlePart extends HandleLink {
             // Done
             this.syntaxReader.skip_next_char();
             return part;
+
             //if a part contains a part his function is used
         } else if (c_n_char == "{") {
             this.syntaxReader.skip_next_char();
@@ -87,97 +93,151 @@ class HandlePart extends HandleLink {
         }
 
         //The same redefines routine as above but when the user writes redefines instead of :>>
-        if(next_action === "redefines" ) {
+        if (next_action === "redefines") {
             let redefinition_part_name = this.syntaxReader.read_name();
             let redefinition_part = this.handle_redefines_part(redefinition_part_name, block)
             part.add_redefine(redefinition_part);
             return part
+
             //The same subsets routine as above but when the user writes subsets instead of :>
         } else if (next_action === "subsets") {
             this.syntaxReader.skip_newlines_blankspace();
             let subset_part = this.handle_subsets_part(block);
-            return part.add_subset(subset_part);
+            part.add_subset(subset_part);
+            return part;
         } else {
             this.syntaxReader.error("The part is either not closed or keywords is missing");
         }
 
-
-
-    }
-
-
-    handle_part_content(part) {
-        var action = this.syntaxReader.read_name();
-        switch (action) {
-            case 'part':
-                "part of a part"
-                break;
-            case 'ref':
-                "ref in a part"
-                break;
-            case 'redefine':
-                "if something is supposed to be redefined in a part"
-                break;
-            case 'value':
-                "if a part have a value"
-                break;
-            case '}':
-                //done
-                break
-            default:
-                "sometimes values doesn't start with value"
-        }
-
-        if (this.syntaxReader.check_next_char() == "}") {
-            this.syntaxReader.skip_next_char(); // skip the }
-            return;
-        } else {
-            // Call same function again
-            this.handle_part_content(part);
-        }
     }
 
     /**
-     * Adds a part in the package
+     * Adds a part in the package, depending on keywords different functions are used
      * @returns {*}
      */
     handle_part_in_package() {
 
         var part_name = this.syntaxReader.read_name();
+        var part = this.active_package.get_or_create_part_by_name(part_name);
 
         this.syntaxReader.skip_newlines_blankspace();
 
-        let check = this.syntaxReader.read_next_char();
+        let next_char = this.syntaxReader.read_next_char();;
 
-        if(check === ":") {
-            this.syntaxReader.skip_newlines_blankspace();
-            var block_name = this.syntaxReader.read_name();
-            var block_of_part = this.get_block_by_name(block_name);
-            var amount = this.syntaxReader.read_amount();
-            this.syntaxReader.skip_newlines_blankspace();
-            check = this.syntaxReader.read_next_char();
+        //checks for :> or :>>
+        if (next_char === ":") {
+            if (this.syntaxReader.check_next_char() === ">") {
+                this.syntaxReader.skip_next_char();
+                if (this.syntaxReader.check_next_char() === ">") {
+                    this.syntaxReader.skip_next_char();
+                    this.handle_redefines_in_parts(part);
+
+                    next_char = this.syntaxReader.read_next_char();
+                } else {
+                next_char = this.handle_subsets_part_in_package(part, next_char);
+                }
+            } else {
+                this.syntaxReader.skip_newlines_blankspace();
+                var block_name = this.syntaxReader.read_name();
+                var amount = this.syntaxReader.read_amount();
+                this.syntaxReader.skip_newlines_blankspace();
+                var block_of_part = this.get_block_by_name(block_name);
+                this.syntaxReader.skip_newlines_blankspace();
+                part.block = block_of_part;
+                part.amount = amount;
+                this.active_package.add_part(part);
+                next_char = this.syntaxReader.read_next_char();
+            }
+
+        } else {
+            let check = this.syntaxReader.check_next_word();
+            if (check === "subsets") {
+                next_char = this.handle_subsets_part_in_package(part, next_char);
+            }
         }
 
-        var part = this.active_package.get_or_create_part_by_name(part_name);
-        part.block = block_of_part;
-        part.amount = amount;
-        this.active_package.add_part(part);
-
-        if(check === ";") {
+        if (next_char === ";") {
             this.syntaxReader.skip_newlines_blankspace();
             return part;
-        } else if(this.syntaxReader.read_next_char() === "{") {
-            this.syntaxReader.error("not yet implemented");
+        } else if (next_char === "{") {
+            this.handle_part_content(part);
+        } else {
+            this.syntaxReader.error("Expected ; or {");
         }
-
-        this.syntaxReader.skip_newlines_blankspace();
-        this.syntaxReader.read_next_char();
-        this.syntaxReader.skip_newlines_blankspace();
-
-        var part_type = this.syntaxReader.read_name();
-
-        //var part = new Part(part_name, null, null, part_type);
 
     }
 
+    /**
+     * If a part ends with { this function is called, mostly for putting parts in parts or redefine parts in parts
+     * @param part
+     */
+    handle_part_content(part) {
+        this.syntaxReader.skip_newlines_blankspace();
+
+        var next_keyword = this.syntaxReader.read_name();
+        switch (next_keyword) {
+            case 'part':
+                this.syntaxReader.skip_newlines_blankspace();
+                next_keyword = this.syntaxReader.read_name();
+                if (next_keyword === "redefines") {
+                    this.handle_redefines_in_parts(part);
+                    break;
+                } else {
+                    this.handle_parts_in_part(part, next_keyword);
+                    break;
+                }
+            case 'ref':
+                this.syntaxReader.error("ref in a part");
+                break;
+            case 'value':
+                this.syntaxReader.error("if a part have a value");
+                break;
+            case '}':
+                //done
+                return
+            default:
+                this.handle_parts_in_part(part);
+
+                /*
+                if (this.syntaxReader.check_next_char() == "}") {
+                    this.syntaxReader.skip_next_char(); // skip the }
+                    return;
+                } else {
+                    // Call same function again
+                    this.handle_part_content(part);
+                }
+
+                 */
+        }
+
+    }
+
+    /**
+     * Makes a new part inside the previous part and adds it into it's parts array
+     * @param part
+     * @param next_keyword
+     * @returns {*|Part}
+     */
+    handle_parts_in_part(part, next_keyword) {
+        let new_part_name = next_keyword;
+        this.syntaxReader.skip_newlines_blankspace();
+        this.syntaxReader.skip_next_char();
+        this.syntaxReader.skip_newlines_blankspace();
+        let new_part_block = this.syntaxReader.read_name();
+        let amount = this.syntaxReader.read_amount();
+        var new_part = this.active_package.get_or_create_part_by_name(new_part_name);
+        new_part.block = new_part_block;
+        new_part.amount = amount;
+        part.add_part(new_part);
+
+        this.syntaxReader.skip_newlines_blankspace();
+        var next_char = this.syntaxReader.read_next_char();
+        if (next_char === ";") {
+            //done
+            return new_part;
+        } else if (next_char === "{") {
+            this.handle_part_content(new_part);
+        }
+
+    }
 }

@@ -37,6 +37,9 @@ class Part {
         this.subsets.push(part);
     }
 
+    add_part(part) {
+        this.parts.push(part);
+    }
 
     /**
      * Add a position in the graphical view

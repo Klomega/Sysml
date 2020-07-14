@@ -16,7 +16,7 @@ class Block  {
         this.references = Array();
         this.links = Array();
 
-        this.subset = Array();
+        this.subsets = Array();
 
         this.special_links = Array();
 
@@ -161,7 +161,7 @@ class Block  {
      * @param subset_block
      */
     add_subset(subset_block) {
-        this.subset.push(subset_block);
+        this.subsets.push(subset_block);
     }
 
     /**
@@ -169,7 +169,7 @@ class Block  {
      * @returns {boolean}
      */
     has_subset() {
-        if (this.subset.length > 0) {
+        if (this.subsets.length > 0) {
             return true;
         } else {
             return false;

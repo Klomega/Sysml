@@ -11,6 +11,7 @@ class HandleBlockContent extends HandleBlock{
     handle_block_content(block) {
         this.syntaxReader.skip_newlines_blankspace();
         var next_keyword = this.syntaxReader.read_key_word();
+        //console.log(next_keyword);
         switch(next_keyword) {
             case "value":
                 this.syntaxReader.skip_newlines_blankspace();
@@ -26,11 +27,6 @@ class HandleBlockContent extends HandleBlock{
                 break;
             case "part":
                 block.add_part(this.handle_part(block));
-                for (var i = 0; i < block.parts.length; i++) {
-                    if (block.parts[i].redefines.length > 0) {
-                        console.log(block.parts[i].redefines[0]);
-                    }
-                }
                 break;
             case "ref":
                 block.add_reference(this.handle_ref(block));
