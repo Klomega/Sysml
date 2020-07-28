@@ -18,10 +18,14 @@ class HandleValueType extends HandleValue{
             //this.active_package.add_value_type_definition(v_t_d);
             
             var open_bracket = this.syntaxReader.read_next_char();
-            if(open_bracket == "{") {
+            if(open_bracket === "{") {
                 this.handle_value_type_content(v_t_d);
             } else {
-                this.syntaxReader.error("Expected { ");
+                this.syntaxReader.skip_newlines_blankspace();
+                v_t_d_name =  this.syntaxReader.read_name();
+                console.log(v_t_d_name);
+                console.log(open_bracket);
+                this.syntaxReader.error("It's seems like you tries to add another value or value type with the same name");
             }
     }
 
@@ -72,7 +76,9 @@ class HandleValueType extends HandleValue{
             this.syntaxReader.read_next_char();
             this.syntaxReader.skip_newlines_blankspace();
             let value_name = checker;
+            console.log(checker);
             let value_property = this.syntaxReader.read_name();
+            console.log(value_property);
             v_t_d.add_value(value_name + " : " + value_property);
             this.syntaxReader.read_next_char();
             this.syntaxReader.skip_newlines_blankspace();

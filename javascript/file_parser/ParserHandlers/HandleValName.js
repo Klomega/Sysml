@@ -27,9 +27,16 @@ class HandleValName {
 
             this.syntaxReader.skip_newlines_blankspace();
 
+        } else if(colon === "redefines") {
+            this.syntaxReader.error("not yet implemented");
+            redefines_value();
         } else {
             this.syntaxReader.error("Expected :");
         }
+
+    }
+
+    handle_val_name_part(part) {
 
     }
 }

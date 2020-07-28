@@ -30,7 +30,6 @@ class HandlePart extends HandleLink {
         if (c_n_char === "[") {
             var amount = this.syntaxReader.read_amount();
             if (amount.length === 2) {
-               // console.log(amount[0]);
                 part.amount = amount[0];
                 part.upper_amount = amount[1];
             } else {
@@ -52,6 +51,9 @@ class HandlePart extends HandleLink {
 
             if (c_n_char == ":") {
                 block_name += "::" + this.syntaxReader.read_name();
+                part.amount = this.syntaxReader.read_amount();
+                this.syntaxReader.skip_newlines_blankspace();
+                c_n_char = this.syntaxReader.read_next_char();
 
                 //checking if it's the shortcut of subsets or redefines
             } else if (c_n_char === ">") {
@@ -119,6 +121,7 @@ class HandlePart extends HandleLink {
 
         var part_name = this.syntaxReader.read_name();
         var part = this.active_package.get_or_create_part_by_name(part_name);
+        part.in_package = this.active_package.name;
 
         this.syntaxReader.skip_newlines_blankspace();
 
@@ -126,6 +129,10 @@ class HandlePart extends HandleLink {
 
         //checks for :> or :>>
         if (next_char === ":") {
+            if (this.syntaxReader.check_next_char() === ":") {
+                this.syntaxReader.skip_next_char();
+
+            }
             if (this.syntaxReader.check_next_char() === ">") {
                 this.syntaxReader.skip_next_char();
                 if (this.syntaxReader.check_next_char() === ">") {
@@ -179,25 +186,33 @@ class HandlePart extends HandleLink {
             case 'part':
                 this.syntaxReader.skip_newlines_blankspace();
                 next_keyword = this.syntaxReader.read_name();
+
                 if (next_keyword === "redefines") {
                     this.handle_redefines_in_parts(part);
-                    break;
                 } else {
                     this.handle_parts_in_part(part, next_keyword);
-                    break;
                 }
+                break;
             case 'ref':
                 this.syntaxReader.error("ref in a part");
                 break;
             case 'value':
-                this.syntaxReader.error("if a part have a value");
+                this.syntaxReader.skip_newlines_blankspace();
+                let value_name = this.syntaxReader.read_name();
+                this.handle_val_name(part, value_name);
+                //part.values.add_value(this.handle_value(part));
+                //this.syntaxReader.error("if a part have a value");
+                break;
+            case 'link':
+                this.handle_link(part);
                 break;
             case '}':
                 //done
                 return
             default:
                 this.handle_parts_in_part(part);
-
+        }
+        this.handle_part_content(part);
                 /*
                 if (this.syntaxReader.check_next_char() == "}") {
                     this.syntaxReader.skip_next_char(); // skip the }
@@ -208,7 +223,7 @@ class HandlePart extends HandleLink {
                 }
 
                  */
-        }
+
 
     }
 
@@ -228,14 +243,19 @@ class HandlePart extends HandleLink {
         var new_part = this.active_package.get_or_create_part_by_name(new_part_name);
         new_part.block = new_part_block;
         new_part.amount = amount;
+        new_part.in_package = part.in_package;
+        new_part.isPart_count = part.isPart_count;
         part.add_part(new_part);
+
 
         this.syntaxReader.skip_newlines_blankspace();
         var next_char = this.syntaxReader.read_next_char();
         if (next_char === ";") {
+            this.syntaxReader.skip_newlines_blankspace();
             //done
             return new_part;
         } else if (next_char === "{") {
+            this.syntaxReader.skip_newlines_blankspace();
             this.handle_part_content(new_part);
         }
 

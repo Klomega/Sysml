@@ -7,6 +7,9 @@ class HandleImport extends HandleBlockContent{
     handle_import() {
         var keyword = this.syntaxReader.read_name(); //get the name of the thing to import
 
+        //Should read the name, search in a specific directory for the file with the same name.
+        //When found should start read the file save the content to the software
+
         switch(keyword) {
             case "ISQ":
                 this.handle_ISQ();

@@ -13,9 +13,13 @@ class HandleRedefines extends HandlePart {
      */
     handle_redefines_part(redefine_part_name, block) {
 
+        var amount = this.syntaxReader.read_amount();
         for (var i = 0; i < block.subsets.length; i++) {
             if (block.subsets[i].get_part_by_name(redefine_part_name)) {
-                var redefine_part = block.subsets[i].get_part_by_name(redefine_part_name);
+                var copy_part = block.subsets[i].get_part_by_name(redefine_part_name);
+                var redefine_part = new Part(copy_part.name, copy_part.block, null, null);
+
+                redefine_part.amount = amount;
             }
         }
 
@@ -67,7 +71,7 @@ class HandleRedefines extends HandlePart {
         this.syntaxReader.skip_newlines_blankspace();
         let redefine_name = this.syntaxReader.read_name();
 
-
+        //This is for the first part of the parts of parts series where a subset exist
         if (part.subsets.length > 0) {
             for (var i = 0; i < part.subsets.length; i++) {
                 for (var j = 0; j < part.subsets[i].parts.length; j++) {
@@ -82,6 +86,7 @@ class HandleRedefines extends HandlePart {
             }
         }
 
+        //This function runs as long as the redefines array have parts
         if (part.redefines.parts != undefined) {
             for (var i = 0; i < part.redefines.parts.length; i++) {
                 if (redefine_name === part.redefines.parts[i].name) {
@@ -102,7 +107,6 @@ class HandleRedefines extends HandlePart {
                 part.add_redefine(redefine_part);
             }
         }
-
 
         let amount = this.syntaxReader.read_amount();
 
@@ -127,6 +131,11 @@ class HandleRedefines extends HandlePart {
         }
 
     }
+
+    redefines_value() {
+
+    }
+
 /*
     handle_redefines_parts_in_package(part) {
         console.log(part);

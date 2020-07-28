@@ -11,7 +11,6 @@ class HandleBlockContent extends HandleBlock{
     handle_block_content(block) {
         this.syntaxReader.skip_newlines_blankspace();
         var next_keyword = this.syntaxReader.read_key_word();
-        //console.log(next_keyword);
         switch(next_keyword) {
             case "value":
                 this.syntaxReader.skip_newlines_blankspace();
@@ -37,12 +36,17 @@ class HandleBlockContent extends HandleBlock{
             case "}":
                 this.syntaxReader.skip_newlines_blankspace();
                 return;
+            case "specializes":
+                this.handle_subsets_blocks(block);
+                break;
             default:
+                //if (next_keyword === "subsets") {
+                //    this.handle_subsets_blocks();
+                //} else
+
                 // If just a value should be assigned
                 // and the value keyword is not used
-                if (next_keyword === "subsets") {
-                    this.handle_subsets_blocks();
-                } else if(next_keyword === ":") {
+                if(next_keyword === ":") {
                     if (next_keyword === ">") {
                         this.handle_subsets_blocks(block);
                     }
@@ -52,6 +56,8 @@ class HandleBlockContent extends HandleBlock{
                 }
         }
 
+        this.handle_block_content(block);
+        /*
         if(this.syntaxReader.check_next_char() == "}") {
             this.syntaxReader.skip_next_char(); // skip the }
             return;
@@ -60,5 +66,7 @@ class HandleBlockContent extends HandleBlock{
             this.handle_block_content(block); 
         }
 
+
+         */
     }
 }

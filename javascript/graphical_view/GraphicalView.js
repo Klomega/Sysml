@@ -439,7 +439,12 @@ class GraphicalView {
     }
 
     get_block_box(x, y, width, height, text, values, parts, block) {
-        var block_tag = "<<block>>\n";
+        if (block.type === "part") {
+            var block_tag = "<<part>>\n";
+        } else {
+            var block_tag = "<<block>>\n";
+        }
+
         text = text.replace("::", "::\n").replace("'", "").replace("'", "");
         if(values == "" || values === undefined) {
             text += "\n";
@@ -500,8 +505,12 @@ class GraphicalView {
         group.on('click', function(evt) {
             
             document.getElementById("selected-block").innerHTML = block.name;
-            document.getElementById("selected-package").innerHTML = block.in_package.name;
-
+            console.log(block);
+            if (block.in_package.name === undefined) {
+                document.getElementById("selected-package").innerHTML = block.in_package;
+            } else {
+                document.getElementById("selected-package").innerHTML = block.in_package.name;
+            }
             draw();
         });
 

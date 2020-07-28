@@ -9,6 +9,7 @@ class Block  {
      * @param {String} name 
      */
     constructor(name) {
+        this.type = "block";
         this.name = name;
         this.parts = Array();
         this.values = Array();
@@ -54,6 +55,7 @@ class Block  {
         if(!this.get_part_by_name(part.name)) {
             this.parts.push(part);
             part.block.increase_is_part();
+            console.log(part.block);
         }
     }
 

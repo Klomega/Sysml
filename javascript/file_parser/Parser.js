@@ -52,13 +52,13 @@ class Parser extends HandleValueType{
                         this.handle_package();
                         break;
                     case "import":
-                        this.handle_import()
+                        this.handle_import() //just a shell for the time being
                         break;
                     case "block":
                         this.handle_block();
                         break;
                     case "value": // since this will be in the package and not inside a block, this will be a value type
-                        this.handle_value_type();
+                        this.handle_value_type(); //will need to check if this is true, may need to rewrite this
                         break;
                     case "assoc":
                         this.handle_assoc_block();
@@ -68,7 +68,7 @@ class Parser extends HandleValueType{
                         break;
                     case 'part':
                         //this.active_package.add_part(this.handle_part_in_package(part));
-                        this.handle_part_in_package();
+                        this.handle_part_in_package();  //handles parts in just the package
                         break;
                     case "}":
                         // Done

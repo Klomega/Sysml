@@ -14,7 +14,7 @@ class HandleBlock extends HandleAssocBlock{
 
         var next_char = this.syntaxReader.check_next_word();
         //var next_char = this.syntaxReader.read_next_char();
-
+      //  console.log(active_block, next_char);
         switch(next_char) {
             case ";":
                 this.syntaxReader.skip_next_char();
@@ -25,6 +25,7 @@ class HandleBlock extends HandleAssocBlock{
                 this.handle_block_content(active_block);
                 break;
             case "specializes":
+                this.syntaxReader.skip_next_char();
                 this.syntaxReader.read_name();
                 this.syntaxReader.skip_newlines_blankspace()
                 this.specialize(active_block, next_char);
@@ -34,21 +35,31 @@ class HandleBlock extends HandleAssocBlock{
                 next_char = this.syntaxReader.read_next_char();
 
                 if(next_char == ">") {
+                    this.syntaxReader.skip_next_char();
                     this.syntaxReader.skip_newlines_blankspace();
 
-                    //Maybe use this instead of the current?
-                    /*var old_block = active_block;
+                   /* var old_block = active_block;
 
                     active_block = Object.assign(new Block(old_block.name), this.get_abstract_block_by_name(this.syntaxReader.read_name()));
 
                     active_block.name = old_block.name; */
 
-                    /*
-                    active_block = this.get_block_from_abstract_block(active_block.name, this.get_abstract_block_by_name(this.syntaxReader.read_name()));
+                    let special_block_name = this.syntaxReader.read_name();
+                    let special_block = this.active_package.get_block_by_name(special_block_name);
+
+                    active_block = this.get_block_from_abstract_block(active_block.name, this.get_abstract_block_by_name(special_block_name));
 
                     this.replace_block_by_name(active_block.name, active_block);
-                     */
-                    this.specialize(active_block, next_char);
+
+                    active_block.add_subset(special_block);
+
+                    next_char = this.syntaxReader.read_next_char();
+                    this.syntaxReader.skip_newlines_blankspace();
+                    if(next_char == "{"){
+                        this.handle_block_content(active_block);
+                    }
+
+                    //this.specialize(active_block, next_char);
                     break;
                 }
             default:

@@ -75,6 +75,7 @@ function draw() {
     }
 
     var package = get_active_package();
+
     var block = get_active_block(package);
 
     var depth = parseInt(document.getElementById("depth").value);
@@ -173,6 +174,7 @@ function previous_draw() {
 
 function get_active_package() {
     var name = document.getElementById("selected-package").innerHTML;
+    console.log(name);
     for(var i = 0; i < window.packages.length; i++) {
         if(window.packages[i].name == name) {
             return window.packages[i];
@@ -183,6 +185,8 @@ function get_active_package() {
 
 function get_active_block(package) {
     var name = document.getElementById("selected-block").innerHTML;
+    console.log(name);
+    console.log(package);
     if(name == "ALL") {
         return name;
     }
