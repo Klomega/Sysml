@@ -13,6 +13,7 @@ class Package_GraphicalView extends GraphicalView{
         y += size ;
 
         var start_x = x;
+        var start_y = y;
 
         //this is used for the borders of the page
         var biggest_x = 0;
@@ -22,6 +23,7 @@ class Package_GraphicalView extends GraphicalView{
         //saves blocks with no parts
         var zero_parts_blocks = [];
         var parts_of_parts = [];
+        var nearest_package_blocks = [];
         for(var i = 0; i < _package.blocks.length; i++) {
             if(_package.blocks[i].isPart_count == 0) {
                 if (_package.blocks[i].parts.length === 0){
@@ -32,6 +34,12 @@ class Package_GraphicalView extends GraphicalView{
             }
         }
 
+
+        y += 2 * size;
+        _y += 2 * size;
+        console.log(start_y);
+        console.log(y);
+        //This is where the parts in parts are drawn
         for(var i = 0; i < _package.parts.length; i++) {
             if (!this.drawn_blocks.includes(_package.parts[i])) {
                 _package.parts[i].set_position_size(x, y, size, size);
@@ -77,7 +85,7 @@ class Package_GraphicalView extends GraphicalView{
 
         }
 
-
+        //This is where the block on the top level are drawn
         for(var i = 0; i < with_zero_incoming.length; i++) {
             if(!this.drawn_blocks.includes(with_zero_incoming[i]) ) {
               //  console.log(with_zero_incoming[i].get_value_string());
@@ -88,6 +96,7 @@ class Package_GraphicalView extends GraphicalView{
                 for(var j = 0; j < with_zero_incoming[i].parts.length; j++) {
                 //    console.log(with_zero_incoming[i].parts[j]);
 
+                    //If those blocks contain parts they are drawn one level bellow
                     if(!this.drawn_blocks.includes(with_zero_incoming[i].parts[j].block)) {
                         if (counter === 0) {
                             //x += 2 * size;
@@ -121,13 +130,14 @@ class Package_GraphicalView extends GraphicalView{
             }
         }
 
+        //Block without any parts are lumped together to the right of the "tree"
         y = temp_y;
         for (var j = 0; j < zero_parts_blocks.length; j++) {
             if (!this.drawn_blocks.includes(zero_parts_blocks[j])) {
              //   console.log(zero_parts_blocks[j]);
                 if ((j % 2) === 0 && j != 0) {
-                    x -= 2 * size;
-                    y += 2 * size;
+                    x += 2 * size;
+                    //y += 2 * size;
                 } else if (j != 0) {
                     x += 2 * size;
                 }
@@ -150,6 +160,7 @@ class Package_GraphicalView extends GraphicalView{
 
         x = start_x;
 
+        //The remaining parts of parts who haven't been placed yet is now drawn
         for(var i = 0; i < parts_of_parts.length; i++) {
             if(!this.drawn_blocks.includes(parts_of_parts[i])) {
                 let counter = 0;
@@ -197,7 +208,7 @@ class Package_GraphicalView extends GraphicalView{
             }
         }
 
-
+        //The remaining blocks who haven't been placed yet is drawn
         for(var i = 0; i < _package.blocks.length; i++) {
             if(!this.drawn_blocks.includes(_package.blocks[i])) {
                 let counter = 0;
@@ -245,6 +256,7 @@ class Package_GraphicalView extends GraphicalView{
             }
         }
 
+        console.log(this.drawn_blocks);
 
 
         /*
@@ -274,12 +286,27 @@ class Package_GraphicalView extends GraphicalView{
             biggest_x = x;
         }
 
-        this.package_layer.add(this.get_package_box(_x, _y, (biggest_x - _x) + 2 * size, (biggest_y - _y) + 2 * size,  "bdd " + _package.name));
+        this.package_layer.add(this.get_package_box(_x, start_y, (biggest_x - _x) + 3 * size, (biggest_y - _y) + 3 * size,  "bdd " + _package.name));
+        //start_y += size;
 
-        
+        //Draws the package
+        _package.set_position_size(biggest_x/2, start_y, size, size);
+        this.block_layer.add(this.get_block_box(biggest_x/2, start_y, size, size, _package.name, "", "", _package));
+        console.log(_package.get_position_size());
+        this.drawn_blocks.push(_package);
+
          // Draw the part arrows
         console.log(this.drawn_blocks);
          for(var i = 0; i < this.drawn_blocks.length; i++) {
+             if (this.drawn_blocks[i].isPart_count === 0) {
+                 nearest_package_blocks.push(this.drawn_blocks[i]);
+             }
+             if(this.drawn_blocks[i].name === _package.name) {
+                 for (var k = 0; k < nearest_package_blocks.length; k++) {
+                     this.line_layer.add(this.get_part_arrow(this.drawn_blocks[i], nearest_package_blocks[k], "", false));
+                 }
+             }
+
             for(var j = 0; j < this.drawn_blocks[i].parts.length; j++) {
                 if(this.drawn_blocks.includes(this.drawn_blocks[i].parts[j].block)) {
                     console.log(this.drawn_blocks[i]);
@@ -287,13 +314,19 @@ class Package_GraphicalView extends GraphicalView{
                 } else if (!this.drawn_blocks.includes(this.drawn_blocks[i].parts[j].block)) {
                     console.log(this.drawn_blocks[i].get_position_size());
                     this.line_layer.add(this.get_part_arrow(this.drawn_blocks[i], this.drawn_blocks[i].parts[j], this.drawn_blocks[i].parts[j].name + " " + this.drawn_blocks[i].parts[j].amount, false));
+                } else if(this.drawn_blocks[i].name === _package.name) {
+                    this.line_layer.add(this.get_part_arrow(this.drawn_blocks[i], this.drawn_blocks[i].parts[j], this.drawn_blocks[i].parts[j].name + " " + this.drawn_blocks[i].parts[j].amount, false));
+
                 }
+
+
             }
 
-
-            for(var p = 0; p < this.drawn_blocks[i].value_types.length; p++) {
-                this.line_layer.add(this.get_part_arrow(this.drawn_blocks[i], this.drawn_blocks[i].value_types[p], this.drawn_blocks[i].value_types[p].name, false));
-                //to was this.drawn_blocks[i].value_types[p].value_type_definition before
+            if (this.drawn_blocks[i].value_types != undefined) {
+                for(var p = 0; p < this.drawn_blocks[i].value_types.length; p++) {
+                    this.line_layer.add(this.get_part_arrow(this.drawn_blocks[i], this.drawn_blocks[i].value_types[p], this.drawn_blocks[i].value_types[p].name, false));
+                    //to was this.drawn_blocks[i].value_types[p].value_type_definition before
+                }
             }
 
 
@@ -312,10 +345,12 @@ class Package_GraphicalView extends GraphicalView{
         if(draw_links) {
              // Draw the links
             for(var i = 0; i < this.drawn_blocks.length; i++) {
-                for(var j = 0; j < this.drawn_blocks[i].links.length; j++) {
-                    var link = this.drawn_blocks[i].links[j];
-                    if(this.drawn_blocks.includes(link.from.block) && this.drawn_blocks.includes(link.to.block)) {
-                        this.line_layer.add(this.get_assoc_line(link.from.block, link.to.block, link.assoc_block.name));
+                if (this.drawn_blocks[i].links != undefined ) {
+                    for(var j = 0; j < this.drawn_blocks[i].links.length; j++) {
+                        var link = this.drawn_blocks[i].links[j];
+                        if(this.drawn_blocks.includes(link.from.block) && this.drawn_blocks.includes(link.to.block)) {
+                            this.line_layer.add(this.get_assoc_line(link.from.block, link.to.block, link.assoc_block.name));
+                        }
                     }
                 }
             }

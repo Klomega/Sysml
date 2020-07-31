@@ -79,6 +79,7 @@ class HandlePart extends HandleLink {
             }
         }
 
+        part.isPart_count = block.isPart_count;
         let ref_block = this.get_block_by_name(block_name);
         part.block = ref_block;
 
